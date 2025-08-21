@@ -1,33 +1,25 @@
-import {
-  type ChatCompletionRequestMessage,
-  Configuration,
-  OpenAIApi,
-} from "openai/";
+import OpenAIClient from "openai";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
 export class OpenAI {
-  private openai: OpenAIApi;
+  private openai: OpenAIClient;
 
   constructor(key: string | undefined) {
-    this.openai = new OpenAIApi(
-      new Configuration({
-        apiKey: key,
-      })
-    );
+    this.openai = new OpenAIClient({ apiKey: key });
   }
-  async chatCompletion(
-    model: string,
-    messages: ChatCompletionRequestMessage[]
-  ) {
-    const response = await this.openai.createChatCompletion({
+
+  async chatCompletion(model: string, messages: ChatCompletionMessageParam[]) {
+    const response = await this.openai.chat.completions.create({
       model,
       messages,
     });
 
-    return response.data;
+    return response;
   }
-  async generalAssistant(messages: ChatCompletionRequestMessage[]) {
-    const response = await this.openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+
+  async generalAssistant(messages: ChatCompletionMessageParam[]) {
+    const response = await this.openai.chat.completions.create({
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -38,20 +30,18 @@ export class OpenAI {
       ],
     });
 
-    return response.data;
+    return response;
   }
 
   async listModels() {
-    const availableModels = ["gpt-4", "gpt-3.5-turbo", "gpt-4-32k"];
-    const models = await this.openai.listModels();
-    return models.data?.data.filter((model) =>
-      availableModels.includes(model.id)
-    );
+    const availableModels = ["gpt-4o", "gpt-4o-mini", "gpt-4.1"];
+    const models = await this.openai.models.list();
+    return models.data.filter((model) => availableModels.includes(model.id));
   }
 
   async generateChatTitle(message: string) {
-    const response = await this.openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+    const response = await this.openai.chat.completions.create({
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -65,6 +55,16 @@ export class OpenAI {
       ],
     });
 
-    return response.data;
+    return response;
+  }
+
+  async createAssistant(name: string, instructions: string) {
+    const assistant = await this.openai.beta.assistants.create({
+      name,
+      instructions,
+      model: "gpt-4o-mini",
+    });
+    return assistant;
   }
 }
+

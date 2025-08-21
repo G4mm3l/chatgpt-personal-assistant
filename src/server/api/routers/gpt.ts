@@ -22,7 +22,7 @@ export const gptRouter = createTRPCRouter({
       });
 
       const data = await ctx.openai.chatCompletion(
-        chat?.model ?? "gpt-3.5-turbo",
+        chat?.model ?? "gpt-4o-mini",
         messages.map((message) => ({
           role: message.role === "user" ? "user" : "assistant",
           content: message.text,
