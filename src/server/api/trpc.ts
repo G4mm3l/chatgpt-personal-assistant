@@ -19,6 +19,7 @@ import { type Session } from "next-auth";
 
 import { getServerAuthSession } from "@/server/auth";
 import { prisma } from "@/server/db";
+import { env } from "@/env.mjs";
 
 type CreateContextOptions = {
   session: Session | null;
@@ -35,26 +36,15 @@ type CreateContextOptions = {
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 
-const createInnerTRPCContext = async (opts: CreateContextOptions) => {
-  const api_key =
-    process.env.OPENAI_API_KEY === "undefined"
-      ? ""
-      : process.env.OPENAI_API_KEY;
-  if (!api_key) {
-    await prisma.setting
-      .findUnique({
-        where: { key: SettingKey.OPENAI_API_KEY },
-      })
-      .then((setting) => (process.env.OPENAI_API_KEY = setting?.value))
-      .catch(() => {
-        throw new Error("OpenAI API Key is empty");
-      });
+const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  if (!env.OPENAI_API_KEY) {
+    throw new Error("OpenAI API Key is empty");
   }
 
   return {
     session: opts.session,
     prisma,
-    openai: new OpenAI(process.env.OPENAI_API_KEY),
+    openai: new OpenAI(env.OPENAI_API_KEY),
   };
 };
 
@@ -86,7 +76,6 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { OpenAI } from "@/integrations/openai";
-import { SettingKey } from "@/constants/enum";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

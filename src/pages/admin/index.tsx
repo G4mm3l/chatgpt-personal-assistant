@@ -1,4 +1,4 @@
-import { type NextPage } from "next";
+import { type NextPage, type GetServerSideProps } from "next";
 import { useState } from "react";
 import { Button, TextInput, Textarea } from "@mantine/core";
 
@@ -45,4 +45,16 @@ const AdminPage: NextPage = () => {
 };
 
 export default AdminPage;
+
+export const getServerSideProps: GetServerSideProps = ({ req }) =>
+  Promise.resolve(
+    req.cookies.adminAuth === "1"
+      ? { props: {} }
+      : {
+          redirect: {
+            destination: "/admin/login",
+            permanent: false,
+          },
+        },
+  );
 
