@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     working_dir: /app
     volumes:
-      - chatgpt-personal-assistant-db:/app/data/db.sqlite
+      - chatgpt-personal-assistant-db:/app/data
     ports:
       - "8080:3000"
     image: chatgpt-personal-assistant
