@@ -35,6 +35,7 @@ const links = [
   { icon: IconMessageCircle, label: "Quick Chat" },
   { icon: IconTemplate, label: "Templates" },
   { icon: IconSettings, label: "Settings" },
+  { icon: IconSettings, label: "Admin", href: "/admin" },
 ];
 
 const Sidebar: React.FC = () => {
@@ -112,6 +113,9 @@ const Sidebar: React.FC = () => {
         }
         if (link.label === "Settings") {
           setSettingsDrawer.open();
+        }
+        if (link.href) {
+          void router.push(link.href);
         }
       }}
     >
