@@ -1,6 +1,6 @@
 # ChatGPT Personal Assistant
 
-ChatGPT Personal Assistant is a user-friendly interface for OpenAI's GPT-powered model, allowing users to harness the power of GPT as their very own personal assistant. This project enables users to input their own API key and interact with the GPT model conveniently and efficiently.
+ChatGPT Personal Assistant is a user-friendly interface for OpenAI's GPT-powered model, allowing users to harness the power of GPT as their very own personal assistant. Provide your OpenAI API key via environment variables and interact with the GPT model conveniently and efficiently.
 
 ![ChatGPT Personal Assistant Screenshot](./screenshot.png)
 
@@ -73,11 +73,13 @@ docker-compose up -d
 
 ## Usage
 
-1. Input your API key by clicking on the "Settings" icon and entering your OpenAI API key in the designated field.
+1. Set the `OPENAI_API_KEY` along with `ADMIN_USERNAME` and `ADMIN_PASSWORD` in your `.env` file.
 
 2. Type your query or request into the input field and press "Enter" button to interact with your GPT personal assistant.
 
-3. Enjoy your personalized AI experience!
+3. Access `/admin` in your browser and log in with the credentials from `.env` for administrative features.
+
+4. Enjoy your personalized AI experience!
 
 ## Contributing
 

@@ -1,6 +1,5 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 import { gptRouter } from "@/server/api/routers/gpt";
-import { settingRouter } from "./routers/setting";
 import { assistantRouter } from "./routers/assistant";
 
 /**
@@ -10,7 +9,6 @@ import { assistantRouter } from "./routers/assistant";
  */
 export const appRouter = createTRPCRouter({
   gpt: gptRouter,
-  setting: settingRouter,
   assistant: assistantRouter,
 });
 

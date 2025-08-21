@@ -29,18 +29,14 @@ import { modals } from "@mantine/modals";
 import { type Chat } from "@prisma/client";
 import QuickChat from "./QuickChat";
 import { errorHandler } from "@/helpers/handler";
-import SettingsDrawer from "./SettingsDrawer";
-
 const links = [
   { icon: IconMessageCircle, label: "Quick Chat" },
   { icon: IconTemplate, label: "Templates" },
-  { icon: IconSettings, label: "Settings" },
   { icon: IconSettings, label: "Admin", href: "/admin" },
 ];
 
 const Sidebar: React.FC = () => {
   const { classes } = useStyles();
-  const [openedSettingsDrawer, setSettingsDrawer] = useDisclosure(false);
 
   const [drawerOpened, { open: openDrawer, close: closeDrawer }] =
     useDisclosure(false);
@@ -111,9 +107,6 @@ const Sidebar: React.FC = () => {
         if (link.label === "Quick Chat") {
           openDrawer();
         }
-        if (link.label === "Settings") {
-          setSettingsDrawer.open();
-        }
         if (link.href) {
           void router.push(link.href);
         }
@@ -167,10 +160,6 @@ const Sidebar: React.FC = () => {
       >
         <QuickChat />
       </Drawer>
-      <SettingsDrawer
-        opened={openedSettingsDrawer}
-        close={setSettingsDrawer.close}
-      />
       {/* <TextInput
         placeholder="Search"
         icon={<IconSearch size="0.8rem" stroke={1.5} />}
